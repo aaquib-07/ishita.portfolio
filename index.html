@@ -382,7 +382,7 @@ h1,h2,h3,h4{text-wrap:balance}
 .field ::placeholder{color:rgba(190,205,235,.35)}
 .form .btn{justify-self:start}
 .notice{display:none;font-size:13.5px;padding:12px 14px;border-radius:12px;background:rgba(79,143,255,.14);border:1px solid rgba(120,160,240,.3);color:#dbe6fa}
-.notice.show{display:block}
+.notice.show{display:block}.notice.ok{background:rgba(98,216,164,.14);border-color:rgba(98,216,164,.3);color:var(--mint)}
 @media(max-width:860px){.contact-grid{grid-template-columns:1fr}}
 
 footer{border-top:1px solid rgba(170,195,245,.09);padding-block:40px;background:rgba(4,7,13,.7)}
@@ -683,11 +683,14 @@ footer{border-top:1px solid rgba(170,195,245,.09);padding-block:40px;background:
         <div class="glass info-item reveal" style="--d:.12s"><span class="ico"><svg viewBox="0 0 24 24"><path d="M12 21s7-6.2 7-11a7 7 0 10-14 0c0 4.800 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg></span><div><small>Location</small><b>Kolkata, India</b></div></div>
         <div class="glass info-item reveal" style="--d:.18s"><span class="ico"><svg viewBox="0 0 24 24"><path d="M10 14a4 4 0 005.7 0l3-3a4 4 0 00-5.700-5.700l-1 1M14 10a4 4 0 00-5.700 0l-3 3a4 4 0 005.700 5.700l1-1"/></svg></span><div><small>LinkedIn</small><b><a href="https://linkedin.com/in/ishita-patra19" target="_blank" rel="noopener">linkedin.com/in/ishita-patra19</a></b></div></div>
       </div>
-      <form class="glass form reveal" id="contactForm" style="--d:.1s">
-        <div class="field"><label for="cf-name">Full name</label><input type="text" id="cf-name" required placeholder="Your name" autocomplete="name"></div>
-        <div class="field"><label for="cf-email">Email address</label><input type="email" id="cf-email" required placeholder="you@example.com" autocomplete="email"></div>
-        <div class="field"><label for="cf-subject">Subject</label><input type="text" id="cf-subject" required placeholder="How can I help?"></div>
-        <div class="field"><label for="cf-message">Message</label><textarea id="cf-message" required placeholder="Tell me about your project..."></textarea></div>
+      <form class="glass form reveal" id="contactForm" style="--d:.1s" action="https://formsubmit.co/ishitapatra19@gmail.com" method="POST">
+        <input type="hidden" name="_subject" value="New portfolio contact form submission">
+        <input type="hidden" name="_captcha" value="false">
+        <input type="text" name="_honey" style="display:none">
+        <div class="field"><label for="cf-name">Full name</label><input type="text" id="cf-name" name="name" required placeholder="Your name" autocomplete="name"></div>
+        <div class="field"><label for="cf-email">Email address</label><input type="email" id="cf-email" name="email" required placeholder="you@example.com" autocomplete="email"></div>
+        <div class="field"><label for="cf-subject">Subject</label><input type="text" id="cf-subject" name="subject" required placeholder="How can I help?"></div>
+        <div class="field"><label for="cf-message">Message</label><textarea id="cf-message" name="message" required placeholder="Tell me about your project..."></textarea></div>
         <button type="submit" class="btn btn-primary">Send Message →</button>
         <div class="notice" id="formNotice" role="status"></div>
       </form>
@@ -863,7 +866,7 @@ $$('[data-copy]').forEach(function(b){b.addEventListener('click',function(){
   var v=b.dataset.copy;
   try{navigator.clipboard.writeText(v).then(function(){b.textContent='Copied';setTimeout(function(){b.textContent='Copy'},1800)},function(){toast('Copy was blocked. The details are '+v)})}catch(e){toast('Copy was blocked. The details are '+v)}
 })});
-$('#contactForm').addEventListener('submit',function(e){e.preventDefault();var n=$('#formNotice');n.classList.add('show');n.textContent='This form is not connected to a backend yet. Please reach out directly via email at ishitapatra19@gmail.com.'});
+$('#contactForm').addEventListener('submit',function(e){e.preventDefault();var f=this,n=$('#formNotice'),btn=f.querySelector('button[type="submit"]');btn.disabled=true;btn.textContent='Sending...';n.className='notice';n.textContent='';fetch(f.action,{method:'POST',body:new FormData(f),headers:{'Accept':'application/json'}}).then(function(r){if(r.ok){n.classList.add('show','ok');n.textContent='Message sent! I will get back to you soon.';f.reset();btn.textContent='Send Message →';btn.disabled=false}else{throw new Error('err')}}).catch(function(){n.classList.add('show');n.textContent='Something went wrong. Please email me directly at ishitapatra19@gmail.com.';btn.textContent='Send Message →';btn.disabled=false})});
 
 /* ---- hero 3D scene (three.js, falls back to the CSS bars) ---- */
 function initScene(){
